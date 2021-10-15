@@ -13,6 +13,8 @@ RUN dpkg --add-architecture i386 && \
 # https://linuxhandbook.com/setup-opencl-linux-docker/
 RUN curl -o amdgpu.tar.xz --referer https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-21-30 https://drivers.amd.com/drivers/linux/amdgpu-pro-21.30-1290604-ubuntu-20.04.tar.xz && \
     tar xf amdgpu.tar.xz --strip-components 1 && \
-    ./amdgpu-install -y --opencl=rocr,legacy --headless --no-dkms
+    ./amdgpu-install -y --opencl=rocr,legacy --headless --no-dkms && \
+    rm -rf /tmp/* && apt-get -y remove ca-certificates curl xz-utils initramfs-tools && \
+    apt-get clean autoclean && rm -rf /var/lib/{apt,dpkg,cache,log}
 
 CMD ["/bin/bash"]

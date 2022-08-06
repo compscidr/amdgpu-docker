@@ -1,9 +1,9 @@
-# Docker_AMDGPU_Base_Image
+# amdgpu base image [![Build container](https://github.com/compscidr/amdgpu-docker/actions/workflows/build.yml/badge.svg)](https://github.com/compscidr/amdgpu-docker/actions/workflows/build.yml)
 Docker base image to build simple GPU Compute Container. See the GH actions
 workflows for current ubuntu version and driver versions which are supported.
 
 ## Build Container
-Clone this Repositority and type command in cloned directory. The build args
+Clone this Repository and type command in cloned directory. The build args
 are option. If they are left out, the defaults are below.
 
 ```bash

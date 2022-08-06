@@ -1,11 +1,21 @@
 name: Deploy container
 on:
-  release:
-    types:
-      - published
+  push:
+    branches: main
+    paths:
+      - 'Dockerfile'
+      - 'install_driver.sh'
+      - '.github/workflows/deploy.sh'
 
 jobs:
   deploy:
+    strategy:
+      matrix:
+        os_version: ["20.04", "22.04"]
+        driver_version: ["21.30", "22.20"]
+        exclude:
+          - os_version: 22.04
+            driver_version: 21.30
     name: Deploy container
     runs-on: ubuntu-20.04
     steps:
@@ -15,13 +25,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      - name: build image
-        run: docker build -f Dockerfile -t amdgpu:${{ github.sha }} .
+      - name: build and tag image
+        run: run: docker build -f Dockerfile --build-arg UBUNTU_VERSION=${{ matrix.os_version }} --build-arg DRIVER_VERSION=${{ matrix.driver_version }} -t compscidr/amdgpu:ubuntu-${{ matrix.os_version }}-${{ matrix.driver_version }} .
       - name: tag and push
         run: |
-          docker tag amdgpu:${{ github.sha }} compscidr/amdgpu:${{ github.event.release.tag_name }}
-          docker push compscidr/amdgpu:${{ github.event.release.tag_name }}
-          docker tag amdgpu:${{ github.sha }} compscidr/amdgpu:latest
+          docker push compscidr/amdgpu:ubuntu-${{ matrix.os_version }}-${{ matrix.driver_version }}
+          docker tag compscidr/amdgpu:ubuntu-${{ matrix.os_version }}-${{ matrix.driver_version }} compscidr/amdgpu:latest
           docker push compscidr/amdgpu:latest
       - name: Logout of Docker Hub
         run: docker logout

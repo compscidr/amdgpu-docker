@@ -1,20 +1,21 @@
-FROM ubuntu:20.04
+ARG UBUNTU_VERSION=20.04
+ARG DRIVER_VERSION=21.30
+FROM ubuntu:$UBUNTU_VERSION
+ARG UBUNTU_VERSION
+ARG DRIVER_VERSION
+
+ENV DRIVER_VERSION=${DRIVER_VERSION}
+ENV UBUNTU_VERSION=${UBUNTU_VERSION}
 
 LABEL maintainer="Jason Ernst"
 LABEL description="Ubuntu with AMD graphic support"
 
 WORKDIR /tmp
-RUN dpkg --add-architecture i386 && \
-    apt-get update && apt-get -y dist-upgrade  && \
-    apt-get -y --no-install-recommends install ca-certificates curl xz-utils initramfs-tools
 
-# since we can't use curl directly to the amd website
-# https://gist.github.com/kytulendu/3351b5d0b4f947e19df36b1ea3c95cbe
-# https://linuxhandbook.com/setup-opencl-linux-docker/
-RUN curl -o amdgpu.tar.xz --referer https://www.amd.com/en/support/kb/release-notes/rn-amdgpu-unified-linux-21-30 https://drivers.amd.com/drivers/linux/amdgpu-pro-21.30-1290604-ubuntu-20.04.tar.xz && \
-    tar xf amdgpu.tar.xz --strip-components 1 && \
-    ./amdgpu-install -y --opencl=rocr,legacy --headless --no-dkms && \
-    rm -rf /tmp/* && apt-get -y remove ca-certificates curl xz-utils initramfs-tools && \
-    apt-get clean autoclean && rm -rf /var/lib/{apt,dpkg,cache,log}
+RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+ ca-certificates curl
+
+COPY ./install_driver.sh .
+RUN chmod +x install_driver.sh && ./install_driver.sh
 
 CMD ["/bin/bash"]

@@ -4,9 +4,16 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        os_version: [20.04, 22.04]
+        driver_version: [21.30, 22.20]
+      exclude:
+        - os_version: 22.04
+          driver_version: 21.30
     name: Build container
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - name: build image
-        run: docker build -f Dockerfile -t amdgpu:${{ github.sha }} .
+        run: docker build -f Dockerfile --build-arg UBUNTU_VERSION=${{ matrix.os_version }} -t amdgpu:${{ github.sha }} .

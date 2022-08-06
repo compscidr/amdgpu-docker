@@ -8,9 +8,9 @@ jobs:
       matrix:
         os_version: [20.04, 22.04]
         driver_version: [21.30, 22.20]
-      exclude:
-        - os_version: 22.04
-          driver_version: 21.30
+        exclude:
+          - os_version: 22.04
+            driver_version: 21.30
     name: Build container
     runs-on: ubuntu-20.04
     steps:

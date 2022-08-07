@@ -5,7 +5,7 @@ on:
     paths:
       - 'Dockerfile'
       - 'install_driver.sh'
-      - '.github/workflows/deploy.sh'
+      - '.github/workflows/deploy.yml'
 
 jobs:
   deploy:

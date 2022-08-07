@@ -16,4 +16,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: build image
-        run: docker build -f Dockerfile --build-arg UBUNTU_VERSION=${{ matrix.os_version }} --build-arg DRIVER_VERSION=${{ matrix.driver_version }} -t amdgpu:ubuntu-${{ matrix.os_version }}-${{ matrix.driver_version }} .
+        run: docker build -f Dockerfile --build-arg UBUNTU_VERSION=${{ matrix.os_version }} --build-arg DRIVER_VERSION=${{ matrix.driver_version }} -t amdgpu:ubuntu${{ matrix.os_version }}-${{ matrix.driver_version }} .

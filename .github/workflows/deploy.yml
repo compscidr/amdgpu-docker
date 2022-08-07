@@ -1,7 +1,12 @@
 name: Deploy container
 on:
   push:
-    branches: main
+    branches:
+      - main
+    paths:
+      - 'Dockerfile'
+      - 'install_driver.sh'
+      - '.github/workflows/deploy.yml'
 
 jobs:
   deploy:

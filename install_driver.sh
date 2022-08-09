@@ -27,10 +27,12 @@ then
     then
       if [ $UBUNTU_VERSION == "20.04" ]
       then
+        apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends wget tar ca-certificates
         curl -o amdgpu.deb --referer https://www.amd.com/en/support/graphics/radeon-500-series/radeon-rx-500x-series/radeon-rx-580x https://repo.radeon.com/amdgpu-install/22.20/ubuntu/focal/amdgpu-install_22.20.50200-1_all.deb && \
           dpkg -i amdgpu.deb
       elif [ $UBUNTU_VERSION == "22.04" ]
       then
+        apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends wget tar ca-certificates
         curl -o amdgpu.deb --referer https://www.amd.com/en/support/graphics/radeon-500-series/radeon-rx-500x-series/radeon-rx-580x https://repo.radeon.com/amdgpu-install/22.20/ubuntu/jammy/amdgpu-install_22.20.50200-1_all.deb && \
           dpkg -i amdgpu.deb
       else

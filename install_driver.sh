@@ -16,8 +16,8 @@ then
 
         ./amdgpu-install -y --opencl=rocr,legacy --headless --no-dkms
         rm -rf /tmp/*
-        apt-get -y remove ca-certificates curl xz-utils initramfs-tools
-        apt-get clean autoclean && rm -rf /var/lib/{apt,dpkg,cache,log}
+        apt-get -y remove curl xz-utils initramfs-tools
+        apt-get clean autoclean
         exit
       else
         echo -e "UBUNTU_VERSION $UBUNTU_VERSION not supported with DRIVER_VERSION $DRIVER_VERSION"
